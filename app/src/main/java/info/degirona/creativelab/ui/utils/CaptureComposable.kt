@@ -24,18 +24,15 @@ fun CaptureComposable(
     widthInPixels: Int = -1,
     content: @Composable () -> Unit,
 ) {
-    Log.d("TAG", "CaptureComposable: checkpoint #1")
     AndroidView(
         modifier = Modifier
             .fillMaxWidth(),
         factory = { ctx ->
-            Log.d("TAG", "CaptureComposable: checkpoint #2")
             CaptureComposableView(
                 ctx = ctx,
                 onBitmapCaptured = onBitmapCaptured,
                 widthInPixels = widthInPixels,
             ) {
-                Log.d("TAG", "CaptureComposable: checkpoint #3")
                 content()
             }
         },
@@ -51,7 +48,6 @@ private class CaptureComposableView(
 ) : LinearLayout(ctx) {
 
     init {
-        Log.d("TAG", "CaptureComposable: checkpoint #4")
         val view = ComposeView(ctx)
         val width = 256
         val height = 256
@@ -60,17 +56,12 @@ private class CaptureComposableView(
         this.addView(view)
 
         view.setContent {
-            Log.d("TAG", "CaptureComposable: checkpoint #5")
             content()
         }
 
-        Log.d("TAG", "CaptureComposable: checkpoint #6 -> this $this")
-        Log.d("TAG", "CaptureComposable: checkpoint #6 -> view $view")
-        Log.d("TAG", "CaptureComposable: checkpoint #6 -> isAlive ${viewTreeObserver.isAlive}")
         viewTreeObserver.addOnGlobalLayoutListener(
             object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
-                    Log.d("TAG", "CaptureComposable: checkpoint #7")
                     viewTreeObserver.removeOnGlobalLayoutListener(this)
                     createBitmapFromView(view)?.let { onBitmapCaptured(it) }
                 }
@@ -79,7 +70,6 @@ private class CaptureComposableView(
     }
 
     private fun createBitmapFromView(view: View): Bitmap? {
-        Log.d("TAG", "CaptureComposable: checkpoint #8")
         view.layoutParams = LayoutParams(
             LayoutParams.WRAP_CONTENT,
             LayoutParams.WRAP_CONTENT

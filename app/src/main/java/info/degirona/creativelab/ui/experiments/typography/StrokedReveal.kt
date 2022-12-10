@@ -35,7 +35,7 @@ fun StrokedReveal(modifier: Modifier = Modifier) {
     val formattedTime by remember { derivedStateOf { formatter.format(localDate) } }
     var time by remember { mutableStateOf(0f) }
     FrameEffect(Unit, initialValue = localDate.nano / 1_000_000_000f) {
-        time = it.also { Log.d("TAG", "StrokedReveal: $it") }
+        time = it
         localDate = LocalDateTime.now()
     }
     StrokedClock(
