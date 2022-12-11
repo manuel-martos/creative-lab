@@ -35,6 +35,7 @@ import info.degirona.creativelab.R
 import info.degirona.creativelab.model.ExperimentModel
 import info.degirona.creativelab.model.ExperimentModel.ExperimentTypeModel
 import info.degirona.creativelab.model.ExperimentType
+import info.degirona.creativelab.ui.experiments.typography.NoiseReveal
 import info.degirona.creativelab.ui.experiments.typography.SimpleStroke
 import info.degirona.creativelab.ui.experiments.typography.StrokeAndAnimationV1
 import info.degirona.creativelab.ui.experiments.typography.StrokeAndAnimationV2
@@ -142,5 +143,6 @@ fun ExperimentTypeModel.Composable(modifier: Modifier) {
         is ExperimentType.Typography.StrokeAndAnimationV1 -> StrokeAndAnimationV1(modifier)
         is ExperimentType.Typography.StrokeAndAnimationV2 -> StrokeAndAnimationV2(modifier)
         is ExperimentType.Typography.StrokedReveal -> StrokedReveal(modifier)
+        is ExperimentType.Typography.NoiseReveal -> NoiseReveal(modifier)
     }
 }

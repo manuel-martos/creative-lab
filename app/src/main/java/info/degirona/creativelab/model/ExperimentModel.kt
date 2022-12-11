@@ -36,5 +36,7 @@ sealed class ExperimentType : Parcelable {
         object StrokeAndAnimationV2 : Typography()
         @Parcelize
         object StrokedReveal : Typography()
+        @Parcelize
+        object NoiseReveal : Typography()
     }
 }

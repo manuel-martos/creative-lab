@@ -43,6 +43,11 @@ val mainExperiments =
                     description = "Variation of previous experiment using simple stroked text as input shader.",
                     type = ExperimentType.Typography.StrokedReveal,
                 ),
+                ExperimentTypeModel(
+                    title = "Noise Reveal",
+                    description = "Applies Simplex noise function to reveal some text.",
+                    type = ExperimentType.Typography.NoiseReveal,
+                ),
             )
         ),
     )
