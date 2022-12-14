@@ -1,6 +1,7 @@
 package info.degirona.creativelab.ui.utils
 
 import android.graphics.Bitmap
+import android.view.View
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,7 +23,7 @@ fun CaptureComposable(
     content: @Composable () -> Unit,
 ) {
     val context = LocalContext.current
-    val composeView = remember { ComposeView(context) }
+    val composeView = remember { ComposeView(context).apply { visibility = View.GONE } }
     var rendered by remember { mutableStateOf(false) }
 
     fun captureBitmap(): Bitmap {
