@@ -14,8 +14,6 @@ import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -26,7 +24,6 @@ import info.degirona.creativelab.ui.experiments.shaders.MaskedBandShader
 import info.degirona.creativelab.ui.theme.fontFamily
 import info.degirona.creativelab.ui.utils.CaptureComposable
 import info.degirona.creativelab.ui.utils.FrameEffect
-import kotlin.math.roundToInt
 
 @Composable
 fun StrokeAndAnimationV2(modifier: Modifier = Modifier) {
@@ -86,11 +83,8 @@ private fun StrokeAndAnimation(
 private fun CaptureBitmapMask(
     onBitmapCaptured: (Bitmap) -> Unit
 ) {
-    val configuration = LocalConfiguration.current
-    val density = LocalDensity.current
     CaptureComposable(
         onBitmapCaptured = onBitmapCaptured,
-        widthInPixels = (density.density * (configuration.screenWidthDp - 64)).roundToInt(),
     ) {
         Text(
             text = "Hello from Creative Lab!",

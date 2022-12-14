@@ -40,7 +40,7 @@ val mainExperiments =
                 ),
                 ExperimentTypeModel(
                     title = "Stroked Reveal",
-                    description = "Variation of previous experiment using simple stroked text as input shader.",
+                    description = "Compose clock rendered using previous stroke typography revealed with nice effect.",
                     type = ExperimentType.Typography.StrokedReveal,
                 ),
                 ExperimentTypeModel(
