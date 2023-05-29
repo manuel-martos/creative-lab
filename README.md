@@ -38,16 +38,3 @@ This project is licensed under the MIT License, allowing you to freely explore, 
 Embark on a journey of creativity and innovation with creative-lab. Let your imagination soar, and don't forget to star the repository if you find it inspiring!
 
 Connect with me on social media for more updates and exciting developments. Together, let's redefine the world of Creative Coding! ✨🎨🚀
-
-
-# creative-lab
-
-This project is just a collection of experiments around Creative Coding and Jetpack Compose. I'll be adding more a more as I advance with them. Take a look, checkout and DM me if needed some help.
-
-![Sample](img/creative-lab.gif)
-
-# 🆕 Star Wars Scrolling Text
-
-Classic scrolling text from Star Wars movies ported to Jetpack Compose
-
-![Sample](img/star-wars-effect.gif) 
