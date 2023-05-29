@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ElevatedCard
@@ -35,11 +34,14 @@ import info.degirona.creativelab.R
 import info.degirona.creativelab.model.ExperimentModel
 import info.degirona.creativelab.model.ExperimentModel.ExperimentTypeModel
 import info.degirona.creativelab.model.ExperimentType
+import info.degirona.creativelab.ui.experiments.scrolling.StarWars
 import info.degirona.creativelab.ui.experiments.typography.NoiseReveal
 import info.degirona.creativelab.ui.experiments.typography.SimpleStroke
 import info.degirona.creativelab.ui.experiments.typography.StrokeAndAnimationV1
 import info.degirona.creativelab.ui.experiments.typography.StrokeAndAnimationV2
 import info.degirona.creativelab.ui.experiments.typography.StrokedReveal
+import info.degirona.creativelab.ui.theme.CreativeLabTheme
+import info.degirona.creativelab.ui.theme.StarWarsTheme
 
 @Composable
 fun Experiments(
@@ -121,18 +123,20 @@ fun ExperimentHolder(
     typeModel: ExperimentTypeModel,
     modifier: Modifier = Modifier
 ) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .background(color = MaterialTheme.colorScheme.background)
-            .padding(horizontal = 32.dp)
-            .statusBarsPadding()
-    ) {
-        typeModel.Composable(
-            modifier = Modifier.wrapContentSize()
-        )
+    typeModel.ExperimentTheme {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .background(color = MaterialTheme.colorScheme.background)
+                .padding(horizontal = 32.dp)
+                .statusBarsPadding()
+        ) {
+            typeModel.Composable(
+                modifier = Modifier.fillMaxSize()
+            )
+        }
     }
 }
 
@@ -144,5 +148,14 @@ fun ExperimentTypeModel.Composable(modifier: Modifier) {
         is ExperimentType.Typography.StrokeAndAnimationV2 -> StrokeAndAnimationV2(modifier)
         is ExperimentType.Typography.StrokedReveal -> StrokedReveal(modifier)
         is ExperimentType.Typography.NoiseReveal -> NoiseReveal(modifier)
+        is ExperimentType.Scrolling.StarWars -> StarWars(modifier)
+    }
+}
+
+@Composable
+fun ExperimentTypeModel.ExperimentTheme(content: @Composable () -> Unit) {
+    when (this.type) {
+        is ExperimentType.Scrolling.StarWars -> StarWarsTheme { content() }
+        else -> CreativeLabTheme { content() }
     }
 }

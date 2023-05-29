@@ -39,4 +39,10 @@ sealed class ExperimentType : Parcelable {
         @Parcelize
         object NoiseReveal : Typography()
     }
+
+    @Parcelize
+    sealed class Scrolling : ExperimentType() {
+        @Parcelize
+        object StarWars : Scrolling()
+    }
 }

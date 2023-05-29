@@ -50,6 +50,18 @@ val mainExperiments =
                 ),
             )
         ),
+        ExperimentListModel(
+            title = "Scrolling",
+            description = "Show cases different ways of scrolling content like text or images.",
+            experimentModels = listOf(
+                ExperimentTypeModel(
+                    title = "StarWars",
+                    description = "StarWars classical text scrolling effect.",
+                    type = ExperimentType.Scrolling.StarWars,
+                )
+
+            )
+        )
     )
 
 class MainActivity : NodeComponentActivity() {
