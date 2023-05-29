@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ElevatedCard
@@ -134,7 +135,7 @@ fun ExperimentHolder(
                 .statusBarsPadding()
         ) {
             typeModel.Composable(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.wrapContentSize()
             )
         }
     }

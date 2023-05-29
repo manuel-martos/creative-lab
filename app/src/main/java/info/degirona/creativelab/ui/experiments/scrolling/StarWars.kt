@@ -3,6 +3,7 @@ package info.degirona.creativelab.ui.experiments.scrolling
 import android.content.pm.ActivityInfo
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,11 +43,10 @@ fun StarWars(
     StarWars(
         time = time,
         modifier = modifier
+            .fillMaxSize()
             .background(Color.Black)
             .clipToBounds(),
-        text = "\n\n" +
-                "\n\n" +
-                "\nCreative Labs!!\n\n" +
+        text = "\nCreative Labs!!\n\n" +
                 "A long time ago, in a galaxy not so far away, there existed a realm where the " +
                 "power of creation dwelled. Within the vast expanse of this technological " +
                 "universe, a new force emerged, known as Jetpack Compose. Like a beacon of light " +
