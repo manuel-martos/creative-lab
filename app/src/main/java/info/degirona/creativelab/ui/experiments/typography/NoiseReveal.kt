@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ShaderBrush
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
@@ -21,7 +22,6 @@ import info.degirona.creativelab.ui.theme.fontFamily
 import info.degirona.creativelab.ui.utils.FrameEffect
 
 @Composable
-@OptIn(ExperimentalTextApi::class)
 fun NoiseReveal(
     modifier: Modifier = Modifier
 ) {
@@ -51,13 +51,14 @@ fun NoiseRevealText(
             fontSize = 40.sp,
             fontFamily = fontFamily,
             fontWeight = FontWeight.Bold,
-            brush = shaderBrush.also {
-                noiseShader.updateTime(time = time)
-            }
+            brush = shaderBrush,
         ),
         modifier = modifier
             .onSizeChanged {
                 noiseShader.updateResolution(it.toSize())
+            }
+            .graphicsLayer {
+                noiseShader.updateTime(time = time)
             }
     )
 }

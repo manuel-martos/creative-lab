@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
@@ -37,7 +38,6 @@ fun StrokeAndAnimationV2(modifier: Modifier = Modifier) {
     }
 }
 
-@OptIn(ExperimentalTextApi::class)
 @Composable
 private fun StrokeAndAnimation(
     maskedBandShader: MaskedBandShader,
@@ -46,8 +46,22 @@ private fun StrokeAndAnimation(
     FrameEffect(Unit) {
         time = it
     }
-    Text(
+    StrokedText(
         text = "Hello from Creative Lab!",
+        maskedBandShader = maskedBandShader,
+        time = time,
+    )
+}
+
+@Composable
+@OptIn(ExperimentalTextApi::class)
+private fun StrokedText(
+    text: String,
+    maskedBandShader: MaskedBandShader,
+    time: Float
+) {
+    Text(
+        text = text,
         color = MaterialTheme.colorScheme.onSurface,
         style = TextStyle.Default.copy(
             textAlign = TextAlign.Center,
@@ -62,18 +76,21 @@ private fun StrokeAndAnimation(
         )
     )
     Text(
-        text = "Hello from Creative Lab!",
+        text = text,
         color = MaterialTheme.colorScheme.onSurface,
         style = TextStyle.Default.copy(
             textAlign = TextAlign.Center,
             fontSize = 40.sp,
             fontFamily = fontFamily,
             fontWeight = FontWeight.Bold,
-            brush = ShaderBrush(maskedBandShader.apply { updateTime(time = time) })
+            brush = ShaderBrush(maskedBandShader)
         ),
         modifier = Modifier
             .onSizeChanged {
                 maskedBandShader.updateResolution(it.toSize())
+            }
+            .graphicsLayer {
+                maskedBandShader.updateTime(time = time)
             }
     )
 }

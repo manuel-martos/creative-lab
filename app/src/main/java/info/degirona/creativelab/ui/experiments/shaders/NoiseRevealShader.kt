@@ -1,8 +1,10 @@
 package info.degirona.creativelab.ui.experiments.shaders
 
 import android.graphics.RuntimeShader
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.geometry.Size
 
+@Stable
 class NoiseRevealShader : RuntimeShader(shader) {
 
     fun updateResolution(size: Size) {
