@@ -35,13 +35,8 @@ import kotlin.math.sin
 fun StarWars(
     modifier: Modifier = Modifier,
 ) {
-    var time by remember { mutableStateOf(0f) }
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
-    FrameEffect(Unit) {
-        time = it
-    }
     StarWars(
-        time = time,
         modifier = modifier
             .fillMaxSize()
             .background(Color.Black)
@@ -108,10 +103,10 @@ fun StarWars(
 @Composable
 private fun StarWars(
     text: String,
-    time: Float,
     modifier: Modifier = Modifier,
     angle: Float = 50f,
 ) {
+    var time by remember { mutableStateOf(0f) }
     var size by remember { mutableStateOf(IntSize.Zero) }
     val textMeasure = rememberTextMeasurer()
     val textMeasureResult = remember(size) {
@@ -119,6 +114,9 @@ private fun StarWars(
             text = text,
             constraints = Constraints.fixedWidth((size.width / 2f).roundToInt())
         )
+    }
+    FrameEffect(Unit) {
+        time = it
     }
     Canvas(
         modifier = modifier
@@ -141,18 +139,20 @@ private fun StarWars(
                         translateY = (size.height * sin(PI.toFloat() * angle / 180f)) - 25f * time,
                     )
                 }
-                val curParagraph = text.substring(
-                    startIndex = textMeasureResult.getLineStart(it),
-                    endIndex = textMeasureResult.getLineEnd(it),
-                )
-                drawText(
-                    text = curParagraph,
-                    textMeasurer = textMeasure,
-                    size = rect.size,
-                    topLeft = rect.topLeft,
-                    overflow = TextOverflow.Visible,
-                    style = TextStyle.Default.copy(Color(255, 196, 0))
-                )
+                if (rect.bottom > 0 && rect.top < size.height) {
+                    val curParagraph = text.substring(
+                        startIndex = textMeasureResult.getLineStart(it),
+                        endIndex = textMeasureResult.getLineEnd(it),
+                    )
+                    drawText(
+                        text = curParagraph,
+                        textMeasurer = textMeasure,
+                        size = rect.size,
+                        topLeft = rect.topLeft,
+                        overflow = TextOverflow.Visible,
+                        style = TextStyle.Default.copy(Color(255, 196, 0))
+                    )
+                }
             }
         }
 
