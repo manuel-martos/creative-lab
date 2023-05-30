@@ -61,7 +61,19 @@ val mainExperiments =
                 )
 
             )
-        )
+        ),
+        ExperimentListModel(
+            title = "Animation",
+            description = "Show cases different ways of scrolling content like text or images.",
+            experimentModels = listOf(
+                ExperimentTypeModel(
+                    title = "Chemical Beaker",
+                    description = "Animated version of the chemical beaker shape shown along every experiment.",
+                    type = ExperimentType.Animation.ChemicalBeaker,
+                )
+
+            )
+        ),
     )
 
 class MainActivity : NodeComponentActivity() {

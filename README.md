@@ -22,6 +22,11 @@ Immerse yourself in the nostalgia of classic Star Wars movies with this remarkab
 
 ![Sample](img/star-wars-effect.gif) 
 
+## 4. Chemical Beaker
+Bubbles rise from within, ascending through the neck, escaping into the outer world.
+
+![Sample](img/chemical-beaker.gif) 
+
 # Getting Started
 To experience the wonders of creative-lab firsthand, follow these simple steps:
 

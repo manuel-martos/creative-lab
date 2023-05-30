@@ -45,4 +45,10 @@ sealed class ExperimentType : Parcelable {
         @Parcelize
         object StarWars : Scrolling()
     }
+
+    @Parcelize
+    sealed class Animation : ExperimentType() {
+        @Parcelize
+        object ChemicalBeaker : Animation()
+    }
 }

@@ -170,10 +170,10 @@ private fun StarWars(
                 0f to Color.Transparent,
                 1f to Color.Black,
                 start = Offset(0f, 0.83f * size.height),
-                end = Offset(0f, 0.87f * size.height),
+                end = Offset(0f, 0.88f * size.height),
             ),
             topLeft = Offset(0f, 0.83f * size.height),
-            size = Size(size.width.toFloat(), 0.05f * size.height),
+            size = Size(size.width.toFloat(), 0.06f * size.height),
         )
     }
 }

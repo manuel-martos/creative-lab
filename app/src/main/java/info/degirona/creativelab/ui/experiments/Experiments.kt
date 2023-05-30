@@ -1,6 +1,5 @@
 package info.degirona.creativelab.ui.experiments
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,16 +24,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import info.degirona.creativelab.R
 import info.degirona.creativelab.model.ExperimentModel
 import info.degirona.creativelab.model.ExperimentModel.ExperimentTypeModel
 import info.degirona.creativelab.model.ExperimentType
+import info.degirona.creativelab.ui.experiments.animation.ChemicalBeaker
 import info.degirona.creativelab.ui.experiments.scrolling.StarWars
 import info.degirona.creativelab.ui.experiments.typography.NoiseReveal
 import info.degirona.creativelab.ui.experiments.typography.SimpleStroke
@@ -103,17 +98,11 @@ fun ExperimentItem(
                     modifier = Modifier.padding(top = 8.dp, end = 48.dp)
                 )
             }
-            Image(
-                painter = painterResource(id = R.drawable.chemical_beaker),
-                contentDescription = "Chemical beaker",
-                contentScale = ContentScale.FillWidth,
-                alignment = Alignment.BottomCenter,
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
+            ChemicalBeaker(
                 modifier = Modifier
                     .requiredWidth(72.dp)
                     .align(Alignment.BottomEnd)
                     .offset(x = 8.dp, y = 24.dp)
-                    .alpha(0.3f)
             )
         }
     }
@@ -150,6 +139,7 @@ fun ExperimentTypeModel.Composable(modifier: Modifier) {
         is ExperimentType.Typography.StrokedReveal -> StrokedReveal(modifier)
         is ExperimentType.Typography.NoiseReveal -> NoiseReveal(modifier)
         is ExperimentType.Scrolling.StarWars -> StarWars(modifier)
+        is ExperimentType.Animation.ChemicalBeaker -> ChemicalBeaker(modifier.fillMaxSize(0.75f))
     }
 }
 
