@@ -22,3 +22,21 @@ fun FrameEffect(
         }
     }
 }
+
+@Composable
+fun FrameEffectDiff(
+    key1: Any?,
+    block: (period: Float) -> Unit
+) {
+    LaunchedEffect(key1) {
+        var lastFrame = 0f
+        while (isActive) {
+            with(awaitFrame() / 1_000_000_000f) {
+                if (lastFrame != 0f) {
+                    block(this - lastFrame)
+                }
+                lastFrame = this
+            }
+        }
+    }
+}

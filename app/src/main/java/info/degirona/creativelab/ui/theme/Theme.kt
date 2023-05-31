@@ -37,7 +37,7 @@ fun CreativeLabTheme(
 }
 
 @Composable
-fun StarWarsTheme(
+fun DarkTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = darkColorScheme(

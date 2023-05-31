@@ -63,6 +63,18 @@ val mainExperiments =
             )
         ),
         ExperimentListModel(
+            title = "Particles",
+            description = "Some experiments with particle systems.",
+            experimentModels = listOf(
+                ExperimentTypeModel(
+                    title = "Gravity",
+                    description = "Observe the captivating interplay of attraction and repulsion between particles, unfolding in an exquisite choreography.",
+                    type = ExperimentType.Particles.Gravity,
+                )
+
+            )
+        ),
+        ExperimentListModel(
             title = "Animation",
             description = "Show cases different ways of scrolling content like text or images.",
             experimentModels = listOf(
@@ -70,6 +82,18 @@ val mainExperiments =
                     title = "Chemical Beaker",
                     description = "Animated version of the chemical beaker shape shown along every experiment.",
                     type = ExperimentType.Animation.ChemicalBeaker,
+                )
+
+            )
+        ),
+        ExperimentListModel(
+            title = "Moire Patterns",
+            description = "Interference patterns creating mesmerizing visual effects.",
+            experimentModels = listOf(
+                ExperimentTypeModel(
+                    title = "Dots",
+                    description = "Witness the fascinating result of two overlapping sets of rotating dots.",
+                    type = ExperimentType.MoirePatterns.Lines,
                 )
 
             )

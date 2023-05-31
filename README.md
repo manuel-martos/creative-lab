@@ -4,7 +4,7 @@ Welcome to creative-lab, a fascinating collection of experiments exploring the r
 ![Sample](img/creative-lab.gif)
 
 # Sample Showcase
-To give you a glimpse of the magic within creative-lab, here are a couple of captivating samples:
+To give you a glimpse of the magic within creative-lab, here are some of captivating samples:
 
 ## 1. Animated stroked typography
 Dynamic strokes bring typography to life, fusing design and animation.
@@ -25,7 +25,12 @@ Immerse yourself in the nostalgia of classic Star Wars movies with this remarkab
 ## 4. Chemical Beaker
 Bubbles rise from within, ascending through the neck, escaping into the outer world.
 
-![Sample](img/chemical-beaker.gif) 
+![Sample](img/chemical-beaker.gif)
+
+## 5. Particles
+Observe the captivating interplay of attraction and repulsion between particles, unfolding in an exquisite choreography.
+
+![Sample](img/particles.gif)
 
 # Getting Started
 To experience the wonders of creative-lab firsthand, follow these simple steps:

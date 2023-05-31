@@ -47,8 +47,20 @@ sealed class ExperimentType : Parcelable {
     }
 
     @Parcelize
+    sealed class Particles : ExperimentType() {
+        @Parcelize
+        object Gravity : Scrolling()
+    }
+
+    @Parcelize
     sealed class Animation : ExperimentType() {
         @Parcelize
         object ChemicalBeaker : Animation()
+    }
+
+    @Parcelize
+    sealed class MoirePatterns : ExperimentType() {
+        @Parcelize
+        object Lines : MoirePatterns()
     }
 }
