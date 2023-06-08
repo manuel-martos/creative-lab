@@ -30,12 +30,16 @@ sealed class ExperimentType : Parcelable {
     sealed class Typography : ExperimentType() {
         @Parcelize
         object SimpleStroke : Typography()
+
         @Parcelize
         object StrokeAndAnimationV1 : Typography()
+
         @Parcelize
         object StrokeAndAnimationV2 : Typography()
+
         @Parcelize
         object StrokedReveal : Typography()
+
         @Parcelize
         object NoiseReveal : Typography()
     }
@@ -56,6 +60,9 @@ sealed class ExperimentType : Parcelable {
     sealed class Animation : ExperimentType() {
         @Parcelize
         object ChemicalBeaker : Animation()
+
+        @Parcelize
+        object FileEncryption : Animation()
     }
 
     @Parcelize

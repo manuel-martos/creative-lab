@@ -82,8 +82,12 @@ val mainExperiments =
                     title = "Chemical Beaker",
                     description = "Animated version of the chemical beaker shape shown along every experiment.",
                     type = ExperimentType.Animation.ChemicalBeaker,
-                )
-
+                ),
+                ExperimentTypeModel(
+                    title = "File Encryption",
+                    description = "Take on a challenge I found it in Twitter.",
+                    type = ExperimentType.Animation.FileEncryption,
+                ),
             )
         ),
         ExperimentListModel(

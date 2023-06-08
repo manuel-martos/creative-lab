@@ -1,6 +1,9 @@
 package info.degirona.creativelab.ui.theme
 
 import androidx.compose.material3.Typography
+import androidx.compose.runtime.Immutable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -37,7 +40,7 @@ val Typography = Typography(
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
-    )
+    ),
     /* Other default text styles to override
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,
@@ -54,4 +57,43 @@ val Typography = Typography(
         letterSpacing = 0.5.sp
     )
     */
+)
+
+@Immutable
+class PassportTypography(
+    val headline: TextStyle,
+    val title: TextStyle,
+    val value: TextStyle,
+    val ocrText: TextStyle,
+    val encryptedText: TextStyle,
+)
+
+val passportTypography = PassportTypography(
+    headline = TextStyle(
+        fontSize = 14.sp,
+        fontWeight = FontWeight.Bold,
+        color = Color.Black,
+    ),
+    title = TextStyle(
+        fontSize = 8.sp,
+        color = Color.Black.copy(alpha = 0.6f),
+    ),
+    value = TextStyle(
+        fontSize = 10.sp,
+        fontWeight = FontWeight.Bold,
+        color = Color.Black,
+    ),
+    ocrText = TextStyle(
+        fontFamily = FontFamily.Monospace,
+        fontSize = 10.sp,
+        fontWeight = FontWeight.Bold,
+        color = Color.Black.copy(alpha = 0.6f),
+    ),
+    encryptedText = TextStyle(
+        fontFamily = FontFamily.Monospace,
+        fontSize = 14.sp,
+        fontWeight = FontWeight.Bold,
+        color = Color(0.396f, 0.357f, 0.506f),
+        shadow = Shadow(Color(0.396f, 0.357f, 0.506f), blurRadius = 3f)
+    )
 )

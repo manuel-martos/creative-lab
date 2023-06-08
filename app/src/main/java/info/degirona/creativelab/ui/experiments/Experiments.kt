@@ -33,6 +33,7 @@ import info.degirona.creativelab.model.ExperimentModel
 import info.degirona.creativelab.model.ExperimentModel.ExperimentTypeModel
 import info.degirona.creativelab.model.ExperimentType
 import info.degirona.creativelab.ui.experiments.animation.ChemicalBeaker
+import info.degirona.creativelab.ui.experiments.animation.FileEncryption
 import info.degirona.creativelab.ui.experiments.moirepatterns.Lines
 import info.degirona.creativelab.ui.experiments.particles.Gravity
 import info.degirona.creativelab.ui.experiments.scrolling.StarWars
@@ -145,6 +146,7 @@ fun ExperimentTypeModel.Composable(modifier: Modifier) {
         is ExperimentType.Scrolling.StarWars -> StarWars(modifier)
         is ExperimentType.Particles.Gravity -> Gravity(modifier)
         is ExperimentType.Animation.ChemicalBeaker -> ChemicalBeaker(modifier.fillMaxSize(0.75f))
+        is ExperimentType.Animation.FileEncryption -> FileEncryption(modifier)
         is ExperimentType.MoirePatterns.Lines -> Lines(modifier)
     }
 }
@@ -153,6 +155,7 @@ fun ExperimentTypeModel.Composable(modifier: Modifier) {
 fun ExperimentTypeModel.ExperimentTheme(content: @Composable () -> Unit) {
     when (this.type) {
         is ExperimentType.Scrolling.StarWars -> DarkTheme { content() }
+        is ExperimentType.Animation.FileEncryption -> DarkTheme { content() }
         is ExperimentType.Particles.Gravity -> {
             val systemUiController: SystemUiController = rememberSystemUiController()
             systemUiController.isSystemBarsVisible = false
