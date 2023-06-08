@@ -28,12 +28,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -45,7 +47,9 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import info.degirona.creativelab.R
+import info.degirona.creativelab.ui.utils.FrameEffect
 import info.degirona.creativelab.ui.utils.LockScreenOrientation
+import kotlin.random.Random
 import info.degirona.creativelab.ui.theme.passportTypography as TextStyles
 
 @Composable
@@ -93,6 +97,10 @@ fun FileEncryption(
             .background(Color.Black)
             .onSizeChanged { size = it }
     ) {
+        StartField(
+            maxStars = 150,
+            modifier = Modifier.fillMaxSize()
+        )
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
@@ -146,6 +154,39 @@ fun FileEncryption(
 }
 
 @Composable
+fun StartField(
+    maxStars: Int,
+    modifier: Modifier = Modifier
+) {
+    var time by remember { mutableStateOf(0f) }
+    var size by remember { mutableStateOf(IntSize.Zero) }
+    val stars = remember(maxStars, size) {
+        MutableList(maxStars) {
+            Offset(size.width * Random.nextFloat(), size.height * Random.nextFloat())
+        }.toMutableStateList()
+    }
+    FrameEffect(size) {
+        time = it
+        var index = 0
+        stars.replaceAll { offset ->
+            index += 1
+            offset.copy(x = (offset.x + ((index % 4) + 1)) % size.width)
+        }
+    }
+    Canvas(modifier = modifier
+        .onSizeChanged { size = it }) {
+        stars.forEachIndexed { index, it ->
+            drawCircle(
+                color = Color.White,
+                center = it,
+                radius = (1f * (index % 3 + 1)),
+                alpha = 0.3f + 0.6f * (((index + 1) % 5) / 4f)
+            )
+        }
+    }
+}
+
+@Composable
 fun Passport(
     modifier: Modifier = Modifier
 ) {
@@ -185,7 +226,7 @@ fun Passport(
                 ) {
                     PassportData(title = "SURNAME", value = "DOE")
                     PassportData(title = "NAME", value = "JOHN")
-                    PassportData(title = "NATIONALITY", value = "LUXENBURG")
+                    PassportData(title = "NATIONALITY", value = "SPANIARD")
                     PassportData(title = "DATE OF ISSUE", value = "18 MAY 2014")
                 }
                 Column(
@@ -197,7 +238,7 @@ fun Passport(
                 ) {
                     PassportData(title = "CARD NUMBER", value = "IN12349812")
                     PassportData(title = "DATE OF BIRTH", value = "29 JANUARY 1995")
-                    PassportData(title = "EXPIRATION", value = "17 MAY 2024")
+                    PassportData(title = "EXPIRATION", value = "24 JULY 2024")
                 }
             }
         }
