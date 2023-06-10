@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,6 +43,8 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
@@ -83,6 +86,7 @@ fun FileEncryption(
         )
     }
     var playTime by remember { mutableStateOf(0L) }
+    val encryptedId by remember(playTime) { derivedStateOf { playTime / 200_000_000L } }
     LaunchedEffect(encryptedAnimation) {
         val startTime = withFrameNanos { it }
         do {
@@ -98,7 +102,7 @@ fun FileEncryption(
             .onSizeChanged { size = it }
     ) {
         StartField(
-            maxStars = 150,
+            maxStars = 250,
             modifier = Modifier.fillMaxSize()
         )
         Box(
@@ -117,20 +121,32 @@ fun FileEncryption(
                     }
             )
         }
-
         Box(
             modifier = Modifier
-                .size(300.dp, 300.dp)
+                .size(320.dp, 320.dp)
                 .zIndex(10f)
-                .scale(0.05f, 1f)
+                .scale(0.15f, 1f)
         ) {
             Canvas(modifier = Modifier.fillMaxSize()) {
                 drawOval(
                     brush = Brush.radialGradient(
-                        0.0f to Color.White,
-                        0.5f to Color.White,
-                        0.6f to Color(0.718f, 0.667f, 0.843f),
-                        1.0f to Color.Transparent,
+                        0f to Color(0.718f, 0.667f, 0.843f),
+                        1f to Color.Transparent,
+                    ),
+                )
+            }
+        }
+        Box(
+            modifier = Modifier
+                .size(280.dp, 280.dp)
+                .zIndex(10f)
+                .scale(0.02f, 1f)
+        ) {
+            Canvas(modifier = Modifier.fillMaxSize()) {
+                drawOval(
+                    brush = Brush.radialGradient(
+                        0f to Color.White,
+                        1f to Color(0.157f, 0.07f, 0.306f, 0.2f),
                     ),
                 )
             }
@@ -144,6 +160,7 @@ fun FileEncryption(
                 .align(Alignment.CenterEnd)
         ) {
             Encrypted(
+                encryptedId = encryptedId,
                 modifier = Modifier
                     .graphicsLayer {
                         translationX = encryptedAnimation.getValueFromNanos(playTime)
@@ -170,7 +187,7 @@ fun StartField(
         var index = 0
         stars.replaceAll { offset ->
             index += 1
-            offset.copy(x = (offset.x + ((index % 4) + 1)) % size.width)
+            offset.copy(x = (offset.x + 4f * ((index % 4) + 1)) % size.width)
         }
     }
     Canvas(modifier = modifier
@@ -281,6 +298,7 @@ fun PassportData(
 
 @Composable
 fun Encrypted(
+    encryptedId: Long,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -289,19 +307,55 @@ fun Encrypted(
             .requiredSize(360.dp, 240.dp)
             .padding(4.dp)
     ) {
-        Text(text = "7EPQ4X2H9TBY8C5ZG0F1IA6L7O3SKV1Q9O3NI2LM6W", style = TextStyles.encryptedText)
-        Text(text = "6V9XL5Y3UO4H7Z8RQ2MC0JI6W1K4B7N0DC8T5YU3I9", style = TextStyles.encryptedText)
-        Text(text = "N8PQ2W5Y6I9X4L7O3Z8J1K4B7G0F1HV9C3D6T4S2E5", style = TextStyles.encryptedText)
-        Text(text = "3X9C5V7B2N4M6K8L1J0H4G6F3D2S5A8PO5I9U3Y6T1", style = TextStyles.encryptedText)
-        Text(text = "Q3W4E5R6T7Y8U9I0O1P2A3S4D5F6G7H8J9K0L1Z2X3", style = TextStyles.encryptedText)
-        Text(text = "B2N4M6J8K0L2H4G6F8D0S2A4Q6W8E0R2T4Y6U8I0O2", style = TextStyles.encryptedText)
-        Text(text = "9M2N4B6V8C0X1Z3L5K7J9H2G4F6D8S0A2Q4W6E8R0T", style = TextStyles.encryptedText)
-        Text(text = "W3E5R7T9Y1U3I5O7P9A1S3D5F7G9H1J3K5L7Z9X1C3", style = TextStyles.encryptedText)
-        Text(text = "I1O3P5L7K9J1H3G5F7D9S1A3Q5W7E9R1T3Y5U7M9N1", style = TextStyles.encryptedText)
-        Text(text = "5B6N7M8V9C0X1Z2L3K4J5H6G7F8D9S0A1Q2W3E4R5T", style = TextStyles.encryptedText)
-        Text(text = "H9J0K1L2Z3X4C5V6B7N8M9Q0W1E2R3T4Y5U6I7O8P9", style = TextStyles.encryptedText)
-        Text(text = "1X2C3V4B5N6M7L8K9J0H1G2F3D4S5A6Q7W8E9R0T1Y", style = TextStyles.encryptedText)
+        EncryptedText(encryptedId = encryptedId, maxLength = 42)
+        EncryptedText(encryptedId = encryptedId, maxLength = 42)
+        EncryptedText(encryptedId = encryptedId, maxLength = 42)
+        EncryptedText(encryptedId = encryptedId, maxLength = 42)
+        EncryptedText(encryptedId = encryptedId, maxLength = 42)
+        EncryptedText(encryptedId = encryptedId, maxLength = 42)
+        EncryptedText(encryptedId = encryptedId, maxLength = 42)
+        EncryptedText(encryptedId = encryptedId, maxLength = 42)
+        EncryptedText(encryptedId = encryptedId, maxLength = 42)
+        EncryptedText(encryptedId = encryptedId, maxLength = 42)
+        EncryptedText(encryptedId = encryptedId, maxLength = 42)
+        EncryptedText(encryptedId = encryptedId, maxLength = 42)
     }
+}
+
+@Composable
+private fun EncryptedText(
+    encryptedId: Long,
+    maxLength: Int,
+    modifier: Modifier = Modifier,
+) {
+    val text = remember(encryptedId) {
+        (0 until maxLength).map {
+            if (Random.nextFloat() > 0.9f) {
+                Random.nextInt(0, 10).toString()
+            } else {
+                'A' + Random.nextInt(0, 26)
+            }
+        }.joinToString("")
+    }
+    val annotatedText = remember(text) {
+        buildAnnotatedString {
+            if (Random.nextFloat() > 0.1f) {
+                val idx = Random.nextInt(0, text.length)
+                append(text, 0, idx)
+                withStyle(TextStyles.highlightEncryptedText.toSpanStyle()) {
+                    append(text[idx])
+                }
+                append(text, idx + 1, text.length)
+            } else {
+                append(text)
+            }
+        }
+    }
+    Text(
+        text = annotatedText,
+        style = TextStyles.encryptedText,
+        modifier = modifier
+    )
 }
 
 @Preview

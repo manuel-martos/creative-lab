@@ -66,6 +66,7 @@ class PassportTypography(
     val value: TextStyle,
     val ocrText: TextStyle,
     val encryptedText: TextStyle,
+    val highlightEncryptedText: TextStyle,
 )
 
 val passportTypography = PassportTypography(
@@ -95,5 +96,12 @@ val passportTypography = PassportTypography(
         fontWeight = FontWeight.Bold,
         color = Color(0.396f, 0.357f, 0.506f),
         shadow = Shadow(Color(0.396f, 0.357f, 0.506f), blurRadius = 3f)
-    )
+    ),
+    highlightEncryptedText = TextStyle(
+        fontFamily = FontFamily.Monospace,
+        fontSize = 14.sp,
+        fontWeight = FontWeight.Bold,
+        color = Color(0.633f, 0.633f, 0.809f),
+        shadow = Shadow(Color(0.633f, 0.633f, 0.809f), blurRadius = 3f)
+    ),
 )
