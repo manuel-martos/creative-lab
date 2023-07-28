@@ -1,6 +1,6 @@
 package info.degirona.creativelab.node.experiments_list
 
-import com.bumble.appyx.interop.rx2.connectable.Connectable
+import com.bumble.appyx.utils.interop.rx2.connectable.Connectable
 import info.degirona.creativelab.model.ExperimentModel
 import info.degirona.creativelab.model.ExperimentModel.ExperimentTypeModel
 import info.degirona.creativelab.node.experiments_list.ExperimentsList.Input

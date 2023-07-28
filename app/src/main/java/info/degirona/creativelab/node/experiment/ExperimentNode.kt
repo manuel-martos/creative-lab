@@ -1,9 +1,9 @@
 package info.degirona.creativelab.node.experiment
 
-import com.bumble.appyx.core.modality.BuildContext
-import com.bumble.appyx.core.node.Node
-import com.bumble.appyx.interop.rx2.connectable.Connectable
-import com.bumble.appyx.interop.rx2.connectable.NodeConnector
+import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.utils.interop.rx2.connectable.Connectable
+import com.bumble.appyx.utils.interop.rx2.connectable.NodeConnector
 
 internal class ExperimentNode(
     buildContext: BuildContext,

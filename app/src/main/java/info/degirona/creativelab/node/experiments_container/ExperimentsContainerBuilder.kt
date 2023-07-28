@@ -1,9 +1,11 @@
 package info.degirona.creativelab.node.experiments_container
 
-import com.bumble.appyx.core.builder.SimpleBuilder
-import com.bumble.appyx.core.modality.BuildContext
-import com.bumble.appyx.core.node.Node
-import com.bumble.appyx.navmodel.backstack.BackStack
+import com.bumble.appyx.components.backstack.BackStack
+import com.bumble.appyx.components.backstack.BackStackModel
+import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
+import com.bumble.appyx.navigation.builder.SimpleBuilder
+import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.node.Node
 
 class ExperimentsContainerBuilder(
     private val dependency: ExperimentsContainer.Dependency,
@@ -21,7 +23,10 @@ class ExperimentsContainerBuilder(
         buildContext: BuildContext
     ): BackStack<ExperimentsContainerNode.NavTarget> =
         BackStack(
-            initialElement = ExperimentsContainerNode.NavTarget.ExperimentList(dependency.initialExperiments),
-            savedStateMap = buildContext.savedStateMap,
+            model = BackStackModel(
+                initialTargets = listOf(ExperimentsContainerNode.NavTarget.ExperimentList(dependency.initialExperiments)),
+                savedStateMap = buildContext.savedStateMap,
+            ),
+            motionController = { BackStackSlider(it) }
         )
 }

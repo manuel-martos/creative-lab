@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
-import com.bumble.appyx.core.integration.NodeHost
-import com.bumble.appyx.core.integrationpoint.NodeComponentActivity
+import com.bumble.appyx.navigation.integration.NodeHost
+import com.bumble.appyx.navigation.integrationpoint.NodeComponentActivity
 import info.degirona.creativelab.model.ExperimentModel
 import info.degirona.creativelab.model.ExperimentModel.ExperimentTypeModel
 import info.degirona.creativelab.model.ExperimentModel.ExperimentListModel
@@ -111,7 +111,7 @@ class MainActivity : NodeComponentActivity() {
         setContent {
             CreativeLabTheme {
                 NodeHost(
-                    integrationPoint = appyxIntegrationPoint,
+                    integrationPoint = appyxV2IntegrationPoint,
                     modifier = Modifier
                         .fillMaxSize()
                         .background(MaterialTheme.colorScheme.background)

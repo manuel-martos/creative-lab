@@ -3,13 +3,13 @@ package info.degirona.creativelab.node.experiments_container
 import android.os.Parcelable
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
-import com.bumble.appyx.core.modality.BuildContext
-import com.bumble.appyx.core.node.Node
-import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.interop.rx2.connectable.Connectable
-import com.bumble.appyx.interop.rx2.connectable.NodeConnector
-import com.bumble.appyx.navmodel.backstack.BackStack
-import com.bumble.appyx.navmodel.backstack.operation.push
+import com.bumble.appyx.components.backstack.BackStack
+import com.bumble.appyx.components.backstack.operation.push
+import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.ParentNode
+import com.bumble.appyx.utils.interop.rx2.connectable.Connectable
+import com.bumble.appyx.utils.interop.rx2.connectable.NodeConnector
 import info.degirona.creativelab.model.ExperimentModel
 import info.degirona.creativelab.model.ExperimentModel.ExperimentTypeModel
 import info.degirona.creativelab.node.experiment.Experiment
@@ -30,7 +30,7 @@ class ExperimentsContainerNode internal constructor(
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,
     view = experimentsContainerView,
-    navModel = backStack
+    appyxComponent = backStack
 ), ExperimentsContainer, Connectable<Input, Output> by NodeConnector() {
 
     sealed class NavTarget : Parcelable {

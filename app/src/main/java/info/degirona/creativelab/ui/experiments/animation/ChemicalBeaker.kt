@@ -27,8 +27,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.toSize
-import com.bumble.appyx.core.collections.ImmutableList
-import com.bumble.appyx.core.collections.toImmutableList
+import com.bumble.appyx.navigation.collections.ImmutableList
+import com.bumble.appyx.navigation.collections.toImmutableList
 import info.degirona.creativelab.R
 import info.degirona.creativelab.ui.utils.FrameEffect
 import kotlin.math.roundToInt

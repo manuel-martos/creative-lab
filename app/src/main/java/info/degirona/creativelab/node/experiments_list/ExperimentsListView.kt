@@ -2,7 +2,7 @@ package info.degirona.creativelab.node.experiments_list
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.core.node.NodeView
+import com.bumble.appyx.navigation.node.NodeView
 import com.jakewharton.rxrelay2.PublishRelay
 import info.degirona.creativelab.model.ExperimentModel
 import info.degirona.creativelab.ui.experiments.Experiments
