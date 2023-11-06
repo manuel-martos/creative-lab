@@ -6,6 +6,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -15,7 +16,6 @@ import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -27,13 +27,12 @@ import info.degirona.creativelab.ui.utils.FrameEffect
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-
 @Composable
 fun StrokedReveal(modifier: Modifier = Modifier) {
     var localDate by remember { mutableStateOf(LocalDateTime.now()) }
     val formatter = remember { DateTimeFormatter.ofPattern("HH:mm:ss") }
     val formattedTime by remember { derivedStateOf { formatter.format(localDate) } }
-    var time by remember { mutableStateOf(0f) }
+    var time by remember { mutableFloatStateOf(0f) }
     FrameEffect(Unit, initialValue = localDate.nano / 1_000_000_000f) {
         time = it
         localDate = LocalDateTime.now()
@@ -45,7 +44,6 @@ fun StrokedReveal(modifier: Modifier = Modifier) {
     )
 }
 
-@OptIn(ExperimentalTextApi::class)
 @Composable
 fun StrokedClock(
     clock: String,
