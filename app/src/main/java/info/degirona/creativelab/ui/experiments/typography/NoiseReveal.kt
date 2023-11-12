@@ -4,14 +4,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.ShaderBrush
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -25,24 +25,19 @@ import info.degirona.creativelab.ui.utils.FrameEffect
 fun NoiseReveal(
     modifier: Modifier = Modifier
 ) {
-    var time by remember { mutableStateOf(0f) }
+    var time by remember { mutableFloatStateOf(0f) }
     FrameEffect(Unit) {
         time = it
     }
-    NoiseRevealText(
-        time = time,
-        modifier = modifier,
-    )
-}
-
-@OptIn(ExperimentalTextApi::class)
-@Composable
-fun NoiseRevealText(
-    time: Float,
-    modifier: Modifier = Modifier
-) {
     val noiseShader = remember { NoiseRevealShader() }
-    val shaderBrush = remember { ShaderBrush(noiseShader) }
+    val shaderBrush = remember(time) {
+        object : ShaderBrush() {
+            override fun createShader(size: Size): Shader {
+                noiseShader.updateTime(time)
+                return noiseShader
+            }
+        }
+    }
     Text(
         text = "Hello from Creative Lab!",
         color = MaterialTheme.colorScheme.onSurface,
@@ -56,9 +51,6 @@ fun NoiseRevealText(
         modifier = modifier
             .onSizeChanged {
                 noiseShader.updateResolution(it.toSize())
-            }
-            .graphicsLayer {
-                noiseShader.updateTime(time = time)
             }
     )
 }

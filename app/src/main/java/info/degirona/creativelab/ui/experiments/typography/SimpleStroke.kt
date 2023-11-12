@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -14,7 +13,6 @@ import androidx.compose.ui.unit.sp
 import info.degirona.creativelab.ui.theme.fontFamily
 
 @Composable
-@OptIn(ExperimentalTextApi::class)
 fun SimpleStroke(
     modifier: Modifier = Modifier
 ) {

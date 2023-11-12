@@ -2,10 +2,12 @@ package info.degirona.creativelab.ui.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.NonRestartableComposable
 import kotlinx.coroutines.android.awaitFrame
 import kotlinx.coroutines.isActive
 
 @Composable
+@NonRestartableComposable
 fun FrameEffect(
     key1: Any?,
     initialValue: Float = 0f,
