@@ -18,7 +18,6 @@ import androidx.compose.ui.graphics.Brush.Companion.linearGradient
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
@@ -99,7 +98,6 @@ fun StarWars(
     )
 }
 
-@OptIn(ExperimentalTextApi::class)
 @Composable
 private fun StarWars(
     text: String,

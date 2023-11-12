@@ -6,16 +6,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -42,24 +43,19 @@ fun StrokeAndAnimationV2(modifier: Modifier = Modifier) {
 private fun StrokeAndAnimation(
     maskedBandShader: MaskedBandShader,
 ) {
-    var time by remember { mutableStateOf(0f) }
+    val text = "Hello from Creative Lab!"
+    var time by remember { mutableFloatStateOf(0f) }
     FrameEffect(Unit) {
         time = it
     }
-    StrokedText(
-        text = "Hello from Creative Lab!",
-        maskedBandShader = maskedBandShader,
-        time = time,
-    )
-}
-
-@Composable
-@OptIn(ExperimentalTextApi::class)
-private fun StrokedText(
-    text: String,
-    maskedBandShader: MaskedBandShader,
-    time: Float
-) {
+    val shaderBrush = remember(time) {
+        object : ShaderBrush() {
+            override fun createShader(size: Size): Shader {
+                maskedBandShader.updateTime(time)
+                return maskedBandShader
+            }
+        }
+    }
     Text(
         text = text,
         color = MaterialTheme.colorScheme.onSurface,
@@ -83,19 +79,15 @@ private fun StrokedText(
             fontSize = 40.sp,
             fontFamily = fontFamily,
             fontWeight = FontWeight.Bold,
-            brush = ShaderBrush(maskedBandShader)
+            brush = shaderBrush
         ),
         modifier = Modifier
             .onSizeChanged {
                 maskedBandShader.updateResolution(it.toSize())
             }
-            .graphicsLayer {
-                maskedBandShader.updateTime(time = time)
-            }
     )
 }
 
-@OptIn(ExperimentalTextApi::class)
 @Composable
 private fun CaptureBitmapMask(
     onBitmapCaptured: (Bitmap) -> Unit
