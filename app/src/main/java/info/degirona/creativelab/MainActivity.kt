@@ -111,7 +111,7 @@ class MainActivity : NodeComponentActivity() {
         setContent {
             CreativeLabTheme {
                 NodeHost(
-                    integrationPoint = appyxIntegrationPoint,
+                    integrationPoint = appyxV1IntegrationPoint,
                     modifier = Modifier
                         .fillMaxSize()
                         .background(MaterialTheme.colorScheme.background)
