@@ -104,6 +104,7 @@ val mainExperiments =
         ),
     )
 
+
 class MainActivity : NodeComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,7 +112,7 @@ class MainActivity : NodeComponentActivity() {
         setContent {
             CreativeLabTheme {
                 NodeHost(
-                    integrationPoint = appyxIntegrationPoint,
+                    integrationPoint = appyxV1IntegrationPoint,
                     modifier = Modifier
                         .fillMaxSize()
                         .background(MaterialTheme.colorScheme.background)
