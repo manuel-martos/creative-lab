@@ -4,7 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -22,11 +22,15 @@ import kotlin.math.roundToInt
 fun Lines(
     modifier: Modifier = Modifier
 ) {
-    var time by remember { mutableStateOf(0f) }
+    var time by remember { mutableFloatStateOf(0f) }
     FrameEffect(Unit) {
         time = it
     }
-    Canvas(modifier = modifier.fillMaxSize().clipToBounds()) {
+    Canvas(
+        modifier = modifier
+            .fillMaxSize()
+            .clipToBounds()
+    ) {
         drawDots(
             color = Color.Black.copy(alpha = 0.7f),
             dotRadius = 5.dp.toPx(),
@@ -39,47 +43,6 @@ fun Lines(
                 distance = 13.dp.toPx(),
             )
         }
-    }
-
-//    Canvas(modifier = modifier.fillMaxSize()) {
-//        rotate(10f * time) {
-//            drawLinePattern(
-//                color = Color.Gray.copy(alpha = 0.4f),
-//                strokeWidth = 25.dp.toPx(),
-//                lineWidth = 30.dp.toPx() * 1.8f,
-//            )
-//        }
-//        rotate(120f - 9f * time) {
-//            drawLinePattern(
-//                color = Color.Gray.copy(alpha = 0.4f),
-//                strokeWidth = 7.dp.toPx(),
-//                lineWidth = 8.dp.toPx() * 1.1f,
-//            )
-//        }
-//        rotate(8f * time + 270f) {
-//            drawLinePattern(
-//                color = Color.Gray.copy(alpha = 0.4f),
-//                strokeWidth = 17.dp.toPx(),
-//                lineWidth = 18.dp.toPx() * 1.1f,
-//            )
-//        }
-//    }
-}
-
-private fun DrawScope.drawLinePattern(
-    color: Color,
-    strokeWidth: Float,
-    lineWidth: Float,
-) {
-    val numLinesInWidth = (size.width / lineWidth).roundToInt()
-    for (index in -numLinesInWidth..2 * numLinesInWidth) {
-        val curX = index * lineWidth
-        drawLine(
-            color = color,
-            start = Offset(curX, -size.height),
-            end = Offset(curX, 2f * size.height),
-            strokeWidth = strokeWidth,
-        )
     }
 }
 

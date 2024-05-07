@@ -160,10 +160,6 @@ private fun generateParticles(
     return result.toImmutableList()
 }
 
-//const val rMin = 0.001
-//const val rMax = 1.2
-//const val attraction = -0.001
-
 private fun ImmutableList<Particle>.next(elapsed: Float, config: Config): ImmutableList<Particle> {
     val result = mutableListOf<Particle>()
     forEachIndexed { outer, outerParticle ->
