@@ -102,6 +102,17 @@ val mainExperiments =
 
             )
         ),
+        ExperimentListModel(
+            title = "Transitions",
+            description = "Different transitions between Composables.",
+            experimentModels = listOf(
+                ExperimentTypeModel(
+                    title = "Noise Transition",
+                    description = "Use Applies Simplex noise function to reveal some text.",
+                    type = ExperimentType.Transitions.NoiseTransition,
+                ),
+            )
+        ),
     )
 
 

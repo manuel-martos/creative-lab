@@ -37,6 +37,9 @@ import info.degirona.creativelab.ui.experiments.animation.FileEncryption
 import info.degirona.creativelab.ui.experiments.moirepatterns.Lines
 import info.degirona.creativelab.ui.experiments.particles.Gravity
 import info.degirona.creativelab.ui.experiments.scrolling.StarWars
+import info.degirona.creativelab.ui.experiments.transitions.NoiseTransition
+import info.degirona.creativelab.ui.experiments.transitions.TreeGrowingAtNight
+import info.degirona.creativelab.ui.experiments.transitions.TreeGrowingDayLight
 import info.degirona.creativelab.ui.experiments.typography.NoiseReveal
 import info.degirona.creativelab.ui.experiments.typography.SimpleStroke
 import info.degirona.creativelab.ui.experiments.typography.StrokeAndAnimationV1
@@ -148,6 +151,11 @@ fun ExperimentTypeModel.Composable(modifier: Modifier) {
         is ExperimentType.Animation.ChemicalBeaker -> ChemicalBeaker(modifier.fillMaxSize(0.75f))
         is ExperimentType.Animation.FileEncryption -> FileEncryption(modifier)
         is ExperimentType.MoirePatterns.Lines -> Lines(modifier)
+        is ExperimentType.Transitions.NoiseTransition -> NoiseTransition(
+            modifier = modifier,
+            block1 = { TreeGrowingDayLight(it) },
+            block2 = { TreeGrowingAtNight(it) }
+        )
     }
 }
 
