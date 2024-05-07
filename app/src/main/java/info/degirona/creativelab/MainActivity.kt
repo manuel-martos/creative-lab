@@ -10,8 +10,8 @@ import androidx.core.view.WindowCompat
 import com.bumble.appyx.core.integration.NodeHost
 import com.bumble.appyx.core.integrationpoint.NodeComponentActivity
 import info.degirona.creativelab.model.ExperimentModel
-import info.degirona.creativelab.model.ExperimentModel.ExperimentTypeModel
 import info.degirona.creativelab.model.ExperimentModel.ExperimentListModel
+import info.degirona.creativelab.model.ExperimentModel.ExperimentTypeModel
 import info.degirona.creativelab.model.ExperimentType
 import info.degirona.creativelab.node.experiments_container.ExperimentsContainer
 import info.degirona.creativelab.node.experiments_container.ExperimentsContainerBuilder

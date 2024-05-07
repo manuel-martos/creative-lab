@@ -7,8 +7,7 @@ import info.degirona.creativelab.node.experiments_list.ExperimentsList.Input
 import info.degirona.creativelab.node.experiments_list.ExperimentsList.Output
 
 interface ExperimentsList : Connectable<Input, Output> {
-    sealed class Input {
-    }
+    sealed class Input
 
     sealed class Output {
         data class ListExperiments(val experimentModels: List<ExperimentModel>) : Output()

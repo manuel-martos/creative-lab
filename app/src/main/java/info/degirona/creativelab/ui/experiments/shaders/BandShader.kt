@@ -1,7 +1,6 @@
 package info.degirona.creativelab.ui.experiments.shaders
 
 import android.graphics.RuntimeShader
-import android.util.Log
 import androidx.compose.ui.geometry.Size
 
 class BandShader(
