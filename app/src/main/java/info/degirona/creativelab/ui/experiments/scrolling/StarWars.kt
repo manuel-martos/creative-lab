@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -104,7 +105,7 @@ private fun StarWars(
     modifier: Modifier = Modifier,
     angle: Float = 50f,
 ) {
-    var time by remember { mutableStateOf(0f) }
+    var time by remember { mutableFloatStateOf(0f) }
     var size by remember { mutableStateOf(IntSize.Zero) }
     val textMeasure = rememberTextMeasurer()
     val textMeasureResult = remember(size) {

@@ -26,6 +26,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -85,7 +87,7 @@ fun FileEncryption(
             targetValue = totalOffset / 2f - size.width / 4f,
         )
     }
-    var playTime by remember { mutableStateOf(0L) }
+    var playTime by remember { mutableLongStateOf(0L) }
     val encryptedId by remember(playTime) { derivedStateOf { playTime / 200_000_000L } }
     LaunchedEffect(encryptedAnimation) {
         val startTime = withFrameNanos { it }
@@ -175,7 +177,7 @@ fun StartField(
     maxStars: Int,
     modifier: Modifier = Modifier
 ) {
-    var time by remember { mutableStateOf(0f) }
+    var time by remember { mutableFloatStateOf(0f) }
     var size by remember { mutableStateOf(IntSize.Zero) }
     val stars = remember(maxStars, size) {
         MutableList(maxStars) {

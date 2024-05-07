@@ -25,12 +25,10 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.collections.ImmutableList
 import com.bumble.appyx.core.collections.toImmutableList
-import info.degirona.creativelab.ui.utils.FrameEffect
 import info.degirona.creativelab.ui.utils.FrameEffectDiff
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.pow
-import kotlin.math.roundToInt
 import kotlin.math.sin
 import kotlin.math.sqrt
 import kotlin.random.Random
@@ -161,10 +159,6 @@ private fun generateParticles(
     }
     return result.toImmutableList()
 }
-
-//const val rMin = 0.001
-//const val rMax = 1.2
-//const val attraction = -0.001
 
 private fun ImmutableList<Particle>.next(elapsed: Float, config: Config): ImmutableList<Particle> {
     val result = mutableListOf<Particle>()

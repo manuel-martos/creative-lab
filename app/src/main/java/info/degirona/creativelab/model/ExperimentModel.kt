@@ -29,45 +29,52 @@ sealed class ExperimentType : Parcelable {
     @Parcelize
     sealed class Typography : ExperimentType() {
         @Parcelize
-        object SimpleStroke : Typography()
+        data object SimpleStroke : Typography()
 
         @Parcelize
-        object StrokeAndAnimationV1 : Typography()
+        data object StrokeAndAnimationV1 : Typography()
 
         @Parcelize
-        object StrokeAndAnimationV2 : Typography()
+        data object StrokeAndAnimationV2 : Typography()
 
         @Parcelize
-        object StrokedReveal : Typography()
+        data object StrokedReveal : Typography()
 
         @Parcelize
-        object NoiseReveal : Typography()
+        data object NoiseReveal : Typography()
     }
 
     @Parcelize
     sealed class Scrolling : ExperimentType() {
         @Parcelize
-        object StarWars : Scrolling()
+        data object StarWars : Scrolling()
     }
 
     @Parcelize
     sealed class Particles : ExperimentType() {
         @Parcelize
-        object Gravity : Scrolling()
+        data object Gravity : Scrolling()
     }
 
     @Parcelize
     sealed class Animation : ExperimentType() {
         @Parcelize
-        object ChemicalBeaker : Animation()
+        data object ChemicalBeaker : Animation()
 
         @Parcelize
-        object FileEncryption : Animation()
+        data object FileEncryption : Animation()
     }
 
     @Parcelize
     sealed class MoirePatterns : ExperimentType() {
         @Parcelize
-        object Lines : MoirePatterns()
+        data object Lines : MoirePatterns()
     }
+
+    @Parcelize
+    sealed class Transitions : ExperimentType() {
+        @Parcelize
+        data object NoiseTransition : Transitions()
+    }
+
 }

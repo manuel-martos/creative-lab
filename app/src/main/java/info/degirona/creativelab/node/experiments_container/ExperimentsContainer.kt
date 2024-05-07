@@ -6,11 +6,9 @@ import info.degirona.creativelab.node.experiments_container.ExperimentsContainer
 import info.degirona.creativelab.node.experiments_container.ExperimentsContainer.Output
 
 interface ExperimentsContainer : Connectable<Input, Output> {
-    sealed class Input {
-    }
+    sealed class Input
 
-    sealed class Output {
-    }
+    sealed class Output
 
     interface Dependency {
         val initialExperiments: List<ExperimentModel>
