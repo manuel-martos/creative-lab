@@ -70,8 +70,12 @@ val mainExperiments =
                     title = "Gravity",
                     description = "Observe the captivating interplay of attraction and repulsion between particles, unfolding in an exquisite choreography.",
                     type = ExperimentType.Particles.Gravity,
-                )
-
+                ),
+                ExperimentTypeModel(
+                    title = "Paper Marbling",
+                    description = "A method of aqueous surface design, which can produce patterns similar to smooth marble or other kinds of stone.",
+                    type = ExperimentType.Particles.Marbling,
+                ),
             )
         ),
         ExperimentListModel(
