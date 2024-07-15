@@ -36,6 +36,7 @@ import info.degirona.creativelab.ui.experiments.animation.ChemicalBeaker
 import info.degirona.creativelab.ui.experiments.animation.FileEncryption
 import info.degirona.creativelab.ui.experiments.moirepatterns.Lines
 import info.degirona.creativelab.ui.experiments.particles.Gravity
+import info.degirona.creativelab.ui.experiments.particles.Marbling
 import info.degirona.creativelab.ui.experiments.scrolling.StarWars
 import info.degirona.creativelab.ui.experiments.transitions.NoiseTransition
 import info.degirona.creativelab.ui.experiments.transitions.TreeGrowingAtNight
@@ -148,6 +149,7 @@ fun ExperimentTypeModel.Composable(modifier: Modifier) {
         is ExperimentType.Typography.NoiseReveal -> NoiseReveal(modifier)
         is ExperimentType.Scrolling.StarWars -> StarWars(modifier)
         is ExperimentType.Particles.Gravity -> Gravity(modifier)
+        is ExperimentType.Particles.Marbling -> Marbling(modifier)
         is ExperimentType.Animation.ChemicalBeaker -> ChemicalBeaker(modifier.fillMaxSize(0.75f))
         is ExperimentType.Animation.FileEncryption -> FileEncryption(modifier)
         is ExperimentType.MoirePatterns.Lines -> Lines(modifier)

@@ -53,7 +53,9 @@ sealed class ExperimentType : Parcelable {
     @Parcelize
     sealed class Particles : ExperimentType() {
         @Parcelize
-        data object Gravity : Scrolling()
+        data object Gravity : Particles()
+        @Parcelize
+        data object Marbling : Particles()
     }
 
     @Parcelize
