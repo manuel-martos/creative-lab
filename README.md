@@ -32,6 +32,11 @@ Observe the captivating interplay of attraction and repulsion between particles,
 
 ![Sample](img/particles.gif)
 
+## 6. Paper marbling
+Discover how we can mimic aqueous surface designs that can create patterns resembling smooth marble or other types of stone. More details [here](https://en.wikipedia.org/wiki/Paper_marbling).
+
+https://github.com/user-attachments/assets/c3f291b0-3161-45eb-b376-96bc1ca4ffcd
+
 # Getting Started
 To experience the wonders of creative-lab firsthand, follow these simple steps:
 
