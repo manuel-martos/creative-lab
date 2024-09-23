@@ -1,20 +1,16 @@
 package info.degirona.creativelab.ui.experiments.typography
 
-import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.keyframes
-import androidx.compose.animation.core.repeatable
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,324 +22,344 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.fastForEachIndexed
 import kotlinx.coroutines.delay
 
-private const val HelloText =
-    "Hello Creative lab, i am gonna make this text as larger as possible to make it more " + "interesting"
-val SplitText = HelloText.split(" ")
-const val LetterDelay = 150
+sealed interface TextRevealEffect {
+    data class ScaleEffect(val shrink: Boolean) : TextRevealEffect
+
+    data object RotateEffect : TextRevealEffect
+
+    data object CurtainEffect : TextRevealEffect
+
+    data object WheelEffect : TextRevealEffect
+}
 
 @OptIn(ExperimentalLayoutApi::class)
-@Preview
 @Composable
-fun TextReveal(modifier: Modifier = Modifier) {
-
-    FlowRow(modifier, horizontalArrangement = Arrangement.spacedBy(3.dp)) {
-        SplitText.forEachIndexed { index, word ->
+fun TextReveal(
+    text: String,
+    textRevealEffect: TextRevealEffect,
+    modifier: Modifier = Modifier,
+    initialDelay: Long = 500L,
+    letterDelay: Long = 50L,
+    textStyle: TextStyle = MaterialTheme.typography.bodyLarge.copy(letterSpacing = 0.sp),
+    animationSpec: FiniteAnimationSpec<Float> = spring(
+        Spring.DampingRatioLowBouncy,
+        Spring.StiffnessLow,
+    ),
+) {
+    FlowRow(
+        modifier = modifier.padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(
+            space = 4.dp,
+            alignment = Alignment.CenterHorizontally,
+        ),
+    ) {
+        val splitText = text.split(" ")
+        splitText.fastForEachIndexed { index, word ->
             val startIndex by remember {
                 derivedStateOf {
-                    SplitText.take(index).joinToString(" ").lastIndex
+                    splitText.take(index).joinToString(" ").lastIndex
                 }
             }
             val wordStartIndex by remember {
                 derivedStateOf {
-                    HelloText.indexOf(
+                    text.indexOf(
                         string = word, startIndex = startIndex, ignoreCase = true
                     )
                 }
             }
-            WordRevealWheel(text = word, wordDelay = wordStartIndex * LetterDelay, letterDelay = LetterDelay)
+            WordReveal(
+                word = word,
+                initialDelay = initialDelay + wordStartIndex * letterDelay,
+                letterDelay = letterDelay,
+                textStyle = textStyle,
+                textRevealEffect = textRevealEffect,
+                animationSpec = animationSpec,
+            )
         }
     }
 }
 
+private enum class AnimationStatus {
+    Idle,
+    Running,
+    Finished,
+}
+
 /**
  * Characters are shown one by one
- * An optional [transitionSpec] can be provided to specify (potentially different) animation for
- * each pair of initialState and targetState. [FiniteAnimationSpec] includes any non-infinite
- * animation, such as [tween], [spring], [keyframes] and even [repeatable], but not
- * [infiniteRepeatable]. By default, [transitionSpec] uses a [spring] animation for all transition
- * destinations.
- * @param wordDelay before arrive this letter
+ * @param initialDelay before arrive this letter
  * @param letterDelay between each one
- * @param shrink for scaling
  *  */
 @Composable
-fun WordReveal(
-    text: String,
-    wordDelay: Int,
-    letterDelay: Int,
+private fun WordReveal(
+    word: String,
+    initialDelay: Long,
+    letterDelay: Long,
+    textStyle: TextStyle,
+    textRevealEffect: TextRevealEffect,
+    animationSpec: FiniteAnimationSpec<Float>,
     modifier: Modifier = Modifier,
-    shrink: Boolean = false,
-    textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
-    transitionSpec: @Composable Transition.Segment<Boolean>.() -> FiniteAnimationSpec<Float> = {
-        spring(
-            Spring.DampingRatioLowBouncy,
-            Spring.StiffnessLow,
-        )
-    },
 ) {
-    Row(modifier, verticalAlignment = Alignment.Bottom) {
-        text.forEachIndexed { index, char ->
-            var isVisible by remember {
-                mutableStateOf(false)
-            }
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.Bottom,
+    ) {
+        var animationStatus by remember { mutableStateOf(AnimationStatus.Idle) }
 
-            val transition = updateTransition(targetState = isVisible, label = "visibility transition")
+        LaunchedEffect(key1 = word) {
+            delay(timeMillis = initialDelay)
+            animationStatus = AnimationStatus.Running
+        }
 
-            LaunchedEffect(key1 = Unit) {
-                delay(timeMillis = index * letterDelay.toLong() + wordDelay)
-                isVisible = true
-            }
+        if (animationStatus == AnimationStatus.Running) {
+            word.forEachIndexed { index, char ->
+                var isVisible by remember { mutableStateOf(false) }
+                val transition = updateTransition(targetState = isVisible, label = "visibility transition")
 
-            val alpha by transition.animateFloat(
-                label = "alpha animation", transitionSpec = transitionSpec
-            ) { visible ->
-                if (visible) 1f else 0f
-            }
-
-            val scale by transition.animateFloat(
-                label = "scale animation", transitionSpec = transitionSpec
-            ) { visible ->
-                if (visible) 1f else {
-                   if (shrink) 2f else .4f
+                LaunchedEffect(index, transition.currentState, transition.targetState) {
+                    if (index == word.indices.last && transition.currentState == transition.targetState && isVisible) {
+                        animationStatus = AnimationStatus.Finished
+                    }
                 }
-            }
 
+                LaunchedEffect(key1 = index) {
+                    delay(timeMillis = index * letterDelay)
+                    isVisible = true
+                }
+
+                LetterRevealWithEffect(
+                    letter = char.toString(),
+                    transition = transition,
+                    animationSpec = animationSpec,
+                    textStyle = textStyle,
+                    textRevealEffect = textRevealEffect,
+                )
+            }
+        } else {
             Text(
-                text = "$char",
-                modifier = Modifier.graphicsLayer {
-                    this.alpha = alpha.coerceIn(0f, 1f)
-                    scaleX = scale
-                    scaleY = scale
-                },
+                text = word,
                 style = textStyle,
+                modifier = Modifier.alpha(if (animationStatus == AnimationStatus.Finished) 1f else 0f)
             )
         }
-
     }
 }
 
-/**
- * Characters are shown one by one
- * An optional [transitionSpec] can be provided to specify (potentially different) animation for
- * each pair of initialState and targetState. [FiniteAnimationSpec] includes any non-infinite
- * animation, such as [tween], [spring], [keyframes] and even [repeatable], but not
- * [infiniteRepeatable]. By default, [transitionSpec] uses a [spring] animation for all transition
- * destinations.
- * @param wordDelay before arrive this letter
- * @param letterDelay between each one
- *  */
 @Composable
-fun WordRevealWithRotation(
-    text: String,
-    wordDelay: Int,
-    letterDelay: Int,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
-    transitionSpec: @Composable Transition.Segment<Boolean>.() -> FiniteAnimationSpec<Float> = {
-        tween(
-            durationMillis = LetterDelay, easing = CubicBezierEasing(0f, 0.5f, 0.5f, 1f)
-        )
-    },
+private fun LetterRevealWithEffect(
+    letter: String,
+    transition: Transition<Boolean>,
+    animationSpec: FiniteAnimationSpec<Float>,
+    textRevealEffect: TextRevealEffect,
+    textStyle: TextStyle,
 ) {
-    Row(modifier, verticalAlignment = Alignment.Bottom) {
-        text.forEachIndexed { index, char ->
-            var isVisible by remember {
-                mutableStateOf(false)
-            }
-
-            val transition = updateTransition(targetState = isVisible, label = "visibility transition")
-
-            LaunchedEffect(key1 = Unit) {
-                delay(timeMillis = index * letterDelay.toLong() + wordDelay)
-                isVisible = true
-            }
-
-            val alpha by transition.animateFloat(
-                label = "alpha animation", transitionSpec = transitionSpec
-            ) { visible ->
-                if (visible) 1f else 0f
-            }
-
-            val scale by transition.animateFloat(
-                label = "scale animation", transitionSpec = transitionSpec
-            ) { visible ->
-                if (visible) 1f else .8f
-            }
-
-            val degrees by transition.animateFloat(
-                label = "degrees animation", transitionSpec = transitionSpec
-            ) { visible ->
-                if (visible) 0f else -180f
-            }
-
-            val camera by transition.animateFloat(
-                label = "degrees animation", transitionSpec = transitionSpec
-            ) { visible ->
-                if (visible) 8f else 7f
-            }
-
-            Text(
-                text = "$char",
-                modifier = Modifier.graphicsLayer {
-                    this.alpha = alpha.coerceIn(0f, 1f)
-                    scaleX = scale
-                    scaleY = scale
-                    this.rotationY = degrees
-                    cameraDistance = camera
-                    transformOrigin = TransformOrigin(.5f, 0f)
-                },
-                style = textStyle,
+    when (textRevealEffect) {
+        is TextRevealEffect.ScaleEffect ->
+            LetterRevealScaled(
+                letter = letter,
+                transition = transition,
+                animationSpec = animationSpec,
+                shrink = textRevealEffect.shrink,
+                textStyle = textStyle,
             )
-        }
 
+        is TextRevealEffect.RotateEffect ->
+            LetterRevealRotated(
+                letter = letter,
+                transition = transition,
+                animationSpec = animationSpec,
+                textStyle = textStyle,
+            )
+
+        is TextRevealEffect.CurtainEffect ->
+            LetterRevealCurtain(
+                letter = letter,
+                transition = transition,
+                animationSpec = animationSpec,
+                textStyle = textStyle,
+            )
+
+        is TextRevealEffect.WheelEffect ->
+            LetterRevealWheel(
+                letter = letter,
+                transition = transition,
+                animationSpec = animationSpec,
+                textStyle = textStyle,
+            )
     }
 }
 
-/**
- * Characters are shown one by one
- * An optional [transitionSpec] can be provided to specify (potentially different) animation for
- * each pair of initialState and targetState. [FiniteAnimationSpec] includes any non-infinite
- * animation, such as [tween], [spring], [keyframes] and even [repeatable], but not
- * [infiniteRepeatable]. By default, [transitionSpec] uses a [spring] animation for all transition
- * destinations.
- * @param wordDelay before arrive this letter
- * @param letterDelay between each one
- *  */
 @Composable
-fun WordRevealCurtain(
-    text: String,
-    wordDelay: Int,
-    letterDelay: Int,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
-    transitionSpec: @Composable Transition.Segment<Boolean>.() -> FiniteAnimationSpec<Float> = {
-        spring(
-            Spring.DampingRatioLowBouncy,
-            Spring.StiffnessLow,
-        )
-    },
+private fun LetterRevealScaled(
+    letter: String,
+    transition: Transition<Boolean>,
+    animationSpec: FiniteAnimationSpec<Float>,
+    shrink: Boolean,
+    textStyle: TextStyle,
 ) {
-    Row(modifier, verticalAlignment = Alignment.Bottom) {
-        text.forEachIndexed { index, char ->
-            var isVisible by remember {
-                mutableStateOf(false)
-            }
-
-            val transition = updateTransition(targetState = isVisible, label = "visibility transition")
-
-            LaunchedEffect(key1 = Unit) {
-                delay(timeMillis = index * letterDelay.toLong() + wordDelay)
-                isVisible = true
-            }
-
-            val alpha by transition.animateFloat(
-                label = "alpha animation", transitionSpec = transitionSpec
-            ) { visible ->
-                if (visible) 1f else 0.8f
-            }
-
-            val degrees by transition.animateFloat(
-                label = "degrees animation", transitionSpec = transitionSpec
-            ) { visible ->
-                if (visible) 0f else -90f
-            }
-
-            val camera by transition.animateFloat(
-                label = "degrees animation", transitionSpec = transitionSpec
-            ) { visible ->
-                if (visible) 8f else 7f
-            }
-
-            Text(
-                text = "$char",
-                modifier = Modifier.graphicsLayer {
-                    this.alpha = alpha.coerceIn(0f, 1f)
-                    this.rotationX = degrees
-                    cameraDistance = camera
-                    this.transformOrigin = TransformOrigin(0f, .5f)
-                },
-                style = textStyle,
-            )
-        }
-
+    val alpha by transition.animateFloat(
+        label = "alpha animation",
+        transitionSpec = { animationSpec },
+    ) { visible ->
+        if (visible) 1f else 0f
     }
+
+    val scale by transition.animateFloat(
+        label = "scale animation",
+        transitionSpec = { animationSpec },
+    ) { visible ->
+        val initialScale = if (shrink) 2f else .4f
+        if (visible) 1f else initialScale
+    }
+
+    Text(
+        text = letter,
+        modifier = Modifier.graphicsLayer {
+            this.alpha = alpha.coerceIn(0f, 1f)
+            this.scaleX = scale
+            this.scaleY = scale
+        },
+        style = textStyle,
+    )
 }
 
-/**
- * Characters are shown one by one
- * An optional [transitionSpec] can be provided to specify (potentially different) animation for
- * each pair of initialState and targetState. [FiniteAnimationSpec] includes any non-infinite
- * animation, such as [tween], [spring], [keyframes] and even [repeatable], but not
- * [infiniteRepeatable]. By default, [transitionSpec] uses a [spring] animation for all transition
- * destinations.
- * @param wordDelay before arrive this letter
- * @param letterDelay between each one
- *  */
 @Composable
-fun WordRevealWheel(
-    text: String,
-    wordDelay: Int,
-    letterDelay: Int,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
-    transitionSpec: @Composable Transition.Segment<Boolean>.() -> FiniteAnimationSpec<Float> = {
-        spring(
-            Spring.DampingRatioLowBouncy,
-            Spring.StiffnessLow,
-        )
-    },
+private fun LetterRevealRotated(
+    letter: String,
+    transition: Transition<Boolean>,
+    animationSpec: FiniteAnimationSpec<Float>,
+    textStyle: TextStyle,
 ) {
-    Row(modifier, verticalAlignment = Alignment.Bottom) {
-        text.forEachIndexed { index, char ->
-            var isVisible by remember {
-                mutableStateOf(false)
-            }
-
-            val transition = updateTransition(targetState = isVisible, label = "visibility transition")
-
-            LaunchedEffect(key1 = Unit) {
-                delay(timeMillis = index * letterDelay.toLong() + wordDelay)
-                isVisible = true
-            }
-
-            val alpha by transition.animateFloat(
-                label = "alpha animation", transitionSpec = transitionSpec
-            ) { visible ->
-                if (visible) 1f else 0f
-            }
-
-            val degrees by transition.animateFloat(
-                label = "degrees animation", transitionSpec = transitionSpec
-            ) { visible ->
-                if (visible) 0f else 180f
-            }
-
-            val density = LocalDensity.current
-
-            val translationX by transition.animateFloat(
-                label = "degrees animation", transitionSpec = transitionSpec
-            ) { visible ->
-                if (visible) 0f else with(density) { textStyle.fontSize.toPx() * 2 }
-            }
-
-            Text(
-                text = "$char",
-                modifier = Modifier.graphicsLayer {
-                    this.alpha = alpha.coerceIn(0f, 1f)
-                    this.rotationZ = degrees
-                    this.translationX = translationX
-                },
-                style = textStyle,
-            )
-        }
-
+    val alpha by transition.animateFloat(
+        label = "alpha animation",
+        transitionSpec = { animationSpec },
+    ) { visible ->
+        if (visible) 1f else 0f
     }
+
+    val scale by transition.animateFloat(
+        label = "scale animation",
+        transitionSpec = { animationSpec },
+    ) { visible ->
+        if (visible) 1f else .8f
+    }
+
+    val degrees by transition.animateFloat(
+        label = "degrees animation",
+        transitionSpec = { animationSpec },
+    ) { visible ->
+        if (visible) 0f else -180f
+    }
+
+    val camera by transition.animateFloat(
+        label = "degrees animation",
+        transitionSpec = { animationSpec },
+    ) { visible ->
+        if (visible) 8f else 7f
+    }
+
+    Text(
+        text = letter,
+        modifier = Modifier.graphicsLayer {
+            this.alpha = alpha.coerceIn(0f, 1f)
+            this.scaleX = scale
+            this.scaleY = scale
+            this.rotationY = degrees
+            this.cameraDistance = camera
+            this.transformOrigin = TransformOrigin(.5f, 0f)
+        },
+        style = textStyle,
+    )
+}
+
+@Composable
+private fun LetterRevealCurtain(
+    letter: String,
+    transition: Transition<Boolean>,
+    animationSpec: FiniteAnimationSpec<Float>,
+    textStyle: TextStyle,
+) {
+    val alpha by transition.animateFloat(
+        label = "alpha animation",
+        transitionSpec = { animationSpec },
+    ) { visible ->
+        if (visible) 1f else 0.8f
+    }
+
+    val degrees by transition.animateFloat(
+        label = "degrees animation",
+        transitionSpec = { animationSpec },
+    ) { visible ->
+        if (visible) 0f else -90f
+    }
+
+    val camera by transition.animateFloat(
+        label = "degrees animation",
+        transitionSpec = { animationSpec },
+    ) { visible ->
+        if (visible) 8f else 7f
+    }
+
+    Text(
+        text = letter,
+        modifier = Modifier.graphicsLayer {
+            this.alpha = alpha.coerceIn(0f, 1f)
+            this.rotationX = degrees
+            this.cameraDistance = camera
+            this.transformOrigin = TransformOrigin(0f, .5f)
+        },
+        style = textStyle,
+    )
+}
+
+
+@Composable
+private fun LetterRevealWheel(
+    letter: String,
+    transition: Transition<Boolean>,
+    animationSpec: FiniteAnimationSpec<Float>,
+    textStyle: TextStyle,
+) {
+    val alpha by transition.animateFloat(
+        label = "alpha animation",
+        transitionSpec = { animationSpec },
+    ) { visible ->
+        if (visible) 1f else 0f
+    }
+
+    val degrees by transition.animateFloat(
+        label = "degrees animation",
+        transitionSpec = { animationSpec },
+    ) { visible ->
+        if (visible) 0f else 180f
+    }
+
+    val density = LocalDensity.current
+
+    val translationX by transition.animateFloat(
+        label = "degrees animation",
+        transitionSpec = { animationSpec },
+    ) { visible ->
+        if (visible) 0f else with(density) { textStyle.fontSize.toPx() * 2 }
+    }
+
+    Text(
+        text = letter,
+        modifier = Modifier.graphicsLayer {
+            this.alpha = alpha.coerceIn(0f, 1f)
+            this.rotationZ = degrees
+            this.translationX = translationX
+        },
+        style = textStyle,
+    )
 }
