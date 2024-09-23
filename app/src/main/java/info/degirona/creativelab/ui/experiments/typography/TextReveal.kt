@@ -110,18 +110,18 @@ private fun WordReveal(
     animationSpec: FiniteAnimationSpec<Float>,
     modifier: Modifier = Modifier,
 ) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.Bottom,
-    ) {
-        var animationStatus by remember { mutableStateOf(AnimationStatus.Idle) }
+    var animationStatus by remember { mutableStateOf(AnimationStatus.Idle) }
 
-        LaunchedEffect(key1 = word) {
-            delay(timeMillis = initialDelay)
-            animationStatus = AnimationStatus.Running
-        }
+    LaunchedEffect(key1 = word) {
+        delay(timeMillis = initialDelay)
+        animationStatus = AnimationStatus.Running
+    }
 
-        if (animationStatus == AnimationStatus.Running) {
+    if (animationStatus == AnimationStatus.Running) {
+        Row(
+            modifier = modifier,
+            verticalAlignment = Alignment.Bottom,
+        ) {
             word.forEachIndexed { index, char ->
                 var isVisible by remember { mutableStateOf(false) }
                 val transition = updateTransition(targetState = isVisible, label = "visibility transition")
@@ -145,13 +145,13 @@ private fun WordReveal(
                     textRevealEffect = textRevealEffect,
                 )
             }
-        } else {
-            Text(
-                text = word,
-                style = textStyle,
-                modifier = Modifier.alpha(if (animationStatus == AnimationStatus.Finished) 1f else 0f)
-            )
         }
+    } else {
+        Text(
+            text = word,
+            style = textStyle,
+            modifier = Modifier.alpha(if (animationStatus == AnimationStatus.Finished) 1f else 0f)
+        )
     }
 }
 
