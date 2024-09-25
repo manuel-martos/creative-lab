@@ -1,21 +1,20 @@
 package info.degirona.creativelab.ui.experiments.typography
 
+import android.annotation.SuppressLint
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.FiniteAnimationSpec
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,6 +26,8 @@ import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastForEachIndexed
@@ -46,42 +47,35 @@ sealed interface TextRevealEffect {
 @Composable
 fun TextReveal(
     text: String,
+    textStyle: TextStyle,
     textRevealEffect: TextRevealEffect,
     modifier: Modifier = Modifier,
     initialDelay: Long = 500L,
     letterDelay: Long = 50L,
-    textStyle: TextStyle = MaterialTheme.typography.bodyLarge.copy(letterSpacing = 0.sp),
-    animationSpec: FiniteAnimationSpec<Float> = spring(
-        Spring.DampingRatioLowBouncy,
-        Spring.StiffnessLow,
+    animationSpec: FiniteAnimationSpec<Float> = tween(
+        durationMillis = 250,
+        easing = FastOutSlowInEasing,
     ),
 ) {
+    val zeroSpacingTextStyle = textStyle.copy(letterSpacing = 0.sp)
     FlowRow(
         modifier = modifier.padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(
-            space = 4.dp,
+            space = calcSpaceWidth(zeroSpacingTextStyle),
             alignment = Alignment.CenterHorizontally,
         ),
     ) {
         val splitText = text.split(" ")
+        val wordStartIndices = remember(text) {
+            splitText.runningFold(0) { acc, word -> acc + word.length + 1 }.dropLast(1)
+        }
         splitText.fastForEachIndexed { index, word ->
-            val startIndex by remember {
-                derivedStateOf {
-                    splitText.take(index).joinToString(" ").lastIndex
-                }
-            }
-            val wordStartIndex by remember {
-                derivedStateOf {
-                    text.indexOf(
-                        string = word, startIndex = startIndex, ignoreCase = true
-                    )
-                }
-            }
+            val wordStartIndex = wordStartIndices[index]
             WordReveal(
                 word = word,
                 initialDelay = initialDelay + wordStartIndex * letterDelay,
                 letterDelay = letterDelay,
-                textStyle = textStyle,
+                textStyle = zeroSpacingTextStyle,
                 textRevealEffect = textRevealEffect,
                 animationSpec = animationSpec,
             )
@@ -89,17 +83,17 @@ fun TextReveal(
     }
 }
 
-private enum class AnimationStatus {
-    Idle,
-    Running,
-    Finished,
+@Composable
+private fun calcSpaceWidth(textStyle: TextStyle): Dp {
+    val textMeasurer = rememberTextMeasurer()
+    val textLayoutResult = remember(textMeasurer) { textMeasurer.measure(" ", textStyle) }
+    return with(LocalDensity.current) { textLayoutResult.size.width.toDp() }
 }
 
-/**
- * Characters are shown one by one
- * @param initialDelay before arrive this letter
- * @param letterDelay between each one
- *  */
+private enum class AnimationState {
+    Idle, Animating, Revealed
+}
+
 @Composable
 private fun WordReveal(
     word: String,
@@ -110,14 +104,14 @@ private fun WordReveal(
     animationSpec: FiniteAnimationSpec<Float>,
     modifier: Modifier = Modifier,
 ) {
-    var animationStatus by remember { mutableStateOf(AnimationStatus.Idle) }
+    var animationState by remember { mutableStateOf(AnimationState.Idle) }
 
     LaunchedEffect(key1 = word) {
         delay(timeMillis = initialDelay)
-        animationStatus = AnimationStatus.Running
+        animationState = AnimationState.Animating
     }
 
-    if (animationStatus == AnimationStatus.Running) {
+    if (animationState == AnimationState.Animating) {
         Row(
             modifier = modifier,
             verticalAlignment = Alignment.Bottom,
@@ -128,7 +122,7 @@ private fun WordReveal(
 
                 LaunchedEffect(index, transition.currentState, transition.targetState) {
                     if (index == word.indices.last && transition.currentState == transition.targetState && isVisible) {
-                        animationStatus = AnimationStatus.Finished
+                        animationState = AnimationState.Revealed
                     }
                 }
 
@@ -137,39 +131,39 @@ private fun WordReveal(
                     isVisible = true
                 }
 
-                LetterRevealWithEffect(
+                textRevealEffect.animateLetter(
                     letter = char.toString(),
                     transition = transition,
                     animationSpec = animationSpec,
                     textStyle = textStyle,
-                    textRevealEffect = textRevealEffect,
                 )
             }
         }
     } else {
+        val alpha = if (animationState == AnimationState.Revealed) 1f else 0f
         Text(
             text = word,
             style = textStyle,
-            modifier = Modifier.alpha(if (animationStatus == AnimationStatus.Finished) 1f else 0f)
+            modifier = Modifier.alpha(alpha),
         )
     }
 }
 
 @Composable
-private fun LetterRevealWithEffect(
+@SuppressLint("ComposableNaming")
+private fun TextRevealEffect.animateLetter(
     letter: String,
     transition: Transition<Boolean>,
     animationSpec: FiniteAnimationSpec<Float>,
-    textRevealEffect: TextRevealEffect,
     textStyle: TextStyle,
 ) {
-    when (textRevealEffect) {
+    when (this) {
         is TextRevealEffect.ScaleEffect ->
             LetterRevealScaled(
                 letter = letter,
                 transition = transition,
                 animationSpec = animationSpec,
-                shrink = textRevealEffect.shrink,
+                shrink = shrink,
                 textStyle = textStyle,
             )
 
