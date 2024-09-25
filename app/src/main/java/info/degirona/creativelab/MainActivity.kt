@@ -48,6 +48,11 @@ val mainExperiments =
                     description = "Applies Simplex noise function to reveal some text.",
                     type = ExperimentType.Typography.NoiseReveal,
                 ),
+                ExperimentTypeModel(
+                    title = "Text Reveal Playground",
+                    description = "Discover various animation effects for revealing text, perfect for making onboarding screens more dynamic.",
+                    type = ExperimentType.Typography.TextReveal,
+                ),
             )
         ),
         ExperimentListModel(

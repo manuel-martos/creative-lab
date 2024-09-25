@@ -64,6 +64,7 @@ fun TextReveal(
             space = calcSpaceWidth(zeroSpacingTextStyle),
             alignment = Alignment.CenterHorizontally,
         ),
+        verticalArrangement = Arrangement.Center,
     ) {
         val splitText = text.split(" ")
         val wordStartIndices = remember(text) {
