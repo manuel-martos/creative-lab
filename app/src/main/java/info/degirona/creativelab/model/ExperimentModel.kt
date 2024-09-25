@@ -42,6 +42,9 @@ sealed class ExperimentType : Parcelable {
 
         @Parcelize
         data object NoiseReveal : Typography()
+
+        @Parcelize
+        data object TextReveal : Typography()
     }
 
     @Parcelize

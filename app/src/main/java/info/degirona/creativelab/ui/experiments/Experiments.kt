@@ -46,6 +46,8 @@ import info.degirona.creativelab.ui.experiments.typography.SimpleStroke
 import info.degirona.creativelab.ui.experiments.typography.StrokeAndAnimationV1
 import info.degirona.creativelab.ui.experiments.typography.StrokeAndAnimationV2
 import info.degirona.creativelab.ui.experiments.typography.StrokedReveal
+import info.degirona.creativelab.ui.experiments.typography.TextReveal
+import info.degirona.creativelab.ui.experiments.typography.TextRevealPlayground
 import info.degirona.creativelab.ui.theme.CreativeLabTheme
 import info.degirona.creativelab.ui.theme.DarkTheme
 
@@ -147,6 +149,7 @@ fun ExperimentTypeModel.Composable(modifier: Modifier) {
         is ExperimentType.Typography.StrokeAndAnimationV2 -> StrokeAndAnimationV2(modifier)
         is ExperimentType.Typography.StrokedReveal -> StrokedReveal(modifier)
         is ExperimentType.Typography.NoiseReveal -> NoiseReveal(modifier)
+        is ExperimentType.Typography.TextReveal -> TextRevealPlayground(modifier)
         is ExperimentType.Scrolling.StarWars -> StarWars(modifier)
         is ExperimentType.Particles.Gravity -> Gravity(modifier)
         is ExperimentType.Particles.Marbling -> Marbling(modifier)
