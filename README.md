@@ -37,6 +37,11 @@ Discover how we can mimic aqueous surface designs that can create patterns resem
 
 https://github.com/user-attachments/assets/c3f291b0-3161-45eb-b376-96bc1ca4ffcd
 
+## 7, Text Reveal
+A set of animation effects for revealing text, perfect for making onboarding screens more dynamic.
+
+https://github.com/user-attachments/assets/98a83a6d-e0ee-4b3f-a7c5-ab885a0d6e0b
+
 # Getting Started
 To experience the wonders of creative-lab firsthand, follow these simple steps:
 
